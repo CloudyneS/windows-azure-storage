@@ -63,6 +63,9 @@ define( 'MSFT_AZURE_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 define( 'MSFT_AZURE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'MSFT_AZURE_PLUGIN_LEGACY_MEDIA_URL', get_admin_url( get_current_blog_id(), 'media-upload.php' ) );
 define( 'MSFT_AZURE_PLUGIN_VERSION', '4.4.0' );
+define('MICROSOFT_AZURE_ACCOUNT_NAME', $_ENV['MICROSOFT_AZURE_ACCOUNT_NAME']);
+define('MICROSOFT_AZURE_ACCOUNT_KEY', $_ENV['MICROSOFT_AZURE_ACCOUNT_KEY']);
+define('MICROSOFT_AZURE_CONTAINER', $_ENV['MICROSOFT_AZURE_CONTAINER']);
 
 /**
  * Get the minimum version of PHP required by this plugin.
@@ -647,8 +650,8 @@ function windows_azure_storage_content_save_pre( $text ) {
 function windows_azure_storage_wp_handle_upload_prefilter( $file ) {
 	// default azure storage container.
 	$container = \Windows_Azure_Helper::get_default_container();
-
 	$upload_dir = \Windows_Azure_Helper::wp_upload_dir();
+
 	$subdir = ltrim( $upload_dir['reldir'] . $upload_dir['subdir'], DIRECTORY_SEPARATOR );
 
 	// Prepare blob name.

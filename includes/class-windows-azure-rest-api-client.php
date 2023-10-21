@@ -550,11 +550,30 @@ class Windows_Azure_Rest_Api_Client {
 	 * @return void
 	 */
 	public function set_connection_string() {
-		$this->_connection_string = sprintf(
-			'DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s',
-			$this->_account_name,
-			$this->_access_key
-		);
+		if (str_contains($this->_access_key, '&sig')) {
+			$this->_connection_string = 
+				'BlobEndpoint=https://'.
+				$this->_account_name.
+				'.blob.core.windows.net/;'.
+				'QueueEndpoint=https://'.
+				$this->_account_name.
+				'.queue.core.windows.net/;'.
+				'FileEndpoint=https://'.
+				$this->_account_name.
+				'.file.core.windows.net/;'.
+				'TableEndpoint=https://'.
+				$this->_account_name.
+				'.table.core.windows.net/;'.
+				'SharedAccessSignature='.
+				$this->_access_key;
+		}
+		else {
+			$this->_connection_string = sprintf(
+				'DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s',
+				$this->_account_name,
+				$this->_access_key
+			);
+		}
 	}
 
 	/**
